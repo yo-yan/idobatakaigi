@@ -5,8 +5,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import TextField from '@material-ui/core/TextField';
 import { Button } from 'react-bootstrap';
 
-const Login = () => {
 
+const Createuser = () => {
     const [name, setName] = useState('')
     const history = useHistory();
 
@@ -14,19 +14,24 @@ const Login = () => {
         firebase.auth().signInAnonymously()
             .then(() => {
                 console.log('succes createUser')
-                history.push('/Chat')
+                history.push('/Login')
             })
-            .catch(function () {
+            .catch(function (error) {
+
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                // ...
             });
+
     }
 
     return (
-        <div className='loginpage'>
-            <h3>井戸端会議 for Web</h3>
+        <div>
             <TextField id="ニックネーム" label="ニックネーム" value={name} onChange={e => setName(e.target.value)} /><br />
-            <Button variant="primary" size="lg" active onClick={handleClick}>Sing in</Button>
+            <Button variant="outlined" onClick={handleClick}>Create</Button>
         </div>
     )
 }
 
-export default Login
+export default Createuser

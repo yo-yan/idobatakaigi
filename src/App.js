@@ -1,11 +1,18 @@
-import React from 'react'
+import React from 'react';
+import './App.css';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Login from './pages/Login';
+import Chat from './pages/Chat';
+
 
 const App = () => {
   return (
-    <div>
-      <h2>井戸端会議　for Web</h2>
-
-    </div>
+    <Router>
+      <Switch>
+        <Route exact path="/" component={Login} />
+        <Route exact path="/chat" component={Chat} />
+      </Switch>
+    </Router>
   )
 }
 
