@@ -18,21 +18,34 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 export const db = firebase.firestore();
 
-//userCreatedata
-//export const mycreateData = async (myfirst, mylast, myborn, mydata) => {
-//await db
-//.collection('user')
-//.doc(mydata)
-//.set({
-// name: myfirst,
-//last: mylast,
-//born: myborn
-//})
-//.then(function (docRef) {
-//  console.log("Document successfully written!");
-//})
-//.catch(function (error) {
-//   console.error("Error writing document: ", error);
-//});
-//}
+export const sendMessage = async (name, message) => {
+    await // Add a new document with a generated id.
+        db.collection("messages")
+            .add({
+                name,
+                message,
+                createAt: new Date()
+            })
+            .then(function (docRef) {
+                console.log("Document written with ID: ", docRef.id);
+            })
+            .catch(function (error) {
+                console.error("Error adding document: ", error);
+            });
+}
+
+export const comment = async () => {
+    let tempArray = []
+    await db.collection("messages")
+        .get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                tempArray.push(doc.data())
+                console.log(`name:${doc.data().name}`);
+                console.log(`message: ${doc.data().message}`);
+
+            });
+            return tempArray;
+        });
+}
 export default firebase;
