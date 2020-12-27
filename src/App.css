@@ -2,9 +2,6 @@
   text-align: center;
 }
 
-.loginform{
-  text-align: center;
-}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -38,4 +35,10 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+
+.main{
+  text-align: center;
+  padding-top: 50px;
 }

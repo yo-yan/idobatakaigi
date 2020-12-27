@@ -48,4 +48,17 @@ export const comment = async () => {
             return tempArray;
         });
 }
+
+//delete
+export const deleteDate = async () => {
+    await db
+        .collection("messages")
+        .doc("MWq0s5v5owAf9x0ngSNd")
+        .delete()
+        .then(function () {
+            console.log("Document successfully deleted!");
+        }).catch(function (error) {
+            console.error("Error removing document: ", error);
+        });
+}
 export default firebase;

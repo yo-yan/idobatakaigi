@@ -5,59 +5,69 @@ import Avatar from '@material-ui/core/Avatar';
 import { sendMessage, db } from '../config/firebase'
 import { Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import './Chat.css';
 
 
 const Chat = ({ name }) => {
     const [text, setText] = useState('')
     const [avaterurl, setAvaterurl] = useState('')
-    const [message, setMessage] = useState()
+    const [message, setMessage] = useState('')
+
+    useEffect(() => {
+        const url = generateGravatar(name)
+        setAvaterurl(url);
+        comment()
+
+    }, [])
 
     const handleClick = async () => {
         await sendMessage(name, text);
         await comment();
     }
 
-    useEffect(() => {
-
-    }, [])
-
     const comment = async () => {
         let tempArray = []
         await db.collection("messages")
+            .orderBy('createAt', 'asc')
             .get()
-            .then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
+            .then(function (querySnapshot) {
+                querySnapshot.forEach(function (doc) {
+                    console.log(doc.id, '=>', doc.data());
                     tempArray.push(doc.data())
-                    console.log(`name:${doc.data().name}`);
-                    console.log(`message: ${doc.data().message}`);
                 });
                 setMessage(tempArray)
             });
     }
     console.log(message)
     return (
-        <div>
-            { message && message.map((element, index) => {
-
-
-                return (
-                    <ul key={index}>
-                        <li>
-                            <Avatar alt={name} src={generateGravatar(element.name)} />
-                            {element.name}
-                            {element.message}
-
-                        </li>
-                    </ul>
-                )
-            })
-            }
-
-            <Avatar alt={name} src={avaterurl} /><br />{name}
-            <TextField id="text" label="text" value={text} onChange={e => setText(e.target.value)} />
-            <Button variant="primary" size="lg" active onClick={handleClick}>送信</Button>
-
+        <div className='wrapper'>
+            <div className='header'>
+                <h2>Nuu</h2>
+            </div>
+            <div className='main'>
+                {message && message.map((element, index) => {
+                    return (
+                        <ul key={index}>
+                            <li className='message'>
+                                <div className='icon'>
+                                    <Avatar alt={name} src={generateGravatar(element.name)} />
+                                    {element.name}
+                                </div>
+                                <h4>{element.message}</h4>
+                            </li>
+                        </ul>
+                    )
+                })
+                }
+            </div>
+            <div className='footer'>
+                <div>
+                    <Avatar className='icon' alt={name} src={generateGravatar(name)} />
+                    {name}
+                </div>
+                <TextField className='text' id="text" label="text" value={text} onChange={e => setText(e.target.value)} />
+                <Button className='button' variant="primary" size="lg" active onClick={handleClick}>✈︎</Button><br />
+            </div>
         </div>
     )
 }
